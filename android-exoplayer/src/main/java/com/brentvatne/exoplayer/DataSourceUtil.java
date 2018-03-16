@@ -61,8 +61,4 @@ public class DataSourceUtil {
         return new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getApplicationInfo().name), bandwidthMeter);
     }
 
-    private static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
-        return new OkHttpDataSourceFactory(OkHttpClientProvider.getOkHttpClient(), getUserAgent(context), bandwidthMeter);
-    }
-
 }
