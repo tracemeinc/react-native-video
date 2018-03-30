@@ -1,7 +1,9 @@
 package com.brentvatne.exoplayer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Handler;
@@ -158,6 +160,17 @@ class ReactExoplayerView extends FrameLayout implements
         addView(exoPlayerView, 0, layoutParams);
     }
 
+    private Activity getActivity() {
+        Context context = getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        return null;
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -190,6 +203,9 @@ class ReactExoplayerView extends FrameLayout implements
 
     @Override
     public void onHostDestroy() {
+        if (((ThemedReactContext) this.getContext()).getCurrentActivity() != getActivity()) {
+            return;
+        }
         stopPlayback();
     }
 
